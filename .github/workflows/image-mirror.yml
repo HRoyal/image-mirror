@@ -99,6 +99,11 @@ jobs:
             echo ${TARGET_REGISTRY}/${TARGET_NAMESPACE}/${tagName} >> dockerhub-image.yml;
           done
           cat images.yml
+          cat > auth.yml <<EOF
+          ${TARGET_REGISTRY}:
+            username: ${TARGET_REGISTRY_USER}
+            password: ${TARGET_REGISTRY_PASSWORD}
+          EOF
           ./image-syncer  --auth=./auth.yml --images=./images.yml 
       - name: Add Success Issues
         if: ${{ success() && steps.check_body.outputs.is_image_format == 'true' }} 
